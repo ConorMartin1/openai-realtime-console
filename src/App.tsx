@@ -1,9 +1,10 @@
-import { ConsolePage } from './pages/ConsolePage';
-import './App.scss';
+import React from 'react';
+import ConsolePage from './pages/ConsolePage';
 
 function App() {
+  console.log("App is rendering"); // Add this to check if App renders
   return (
-    <div data-component="App">
+    <div>
       <ConsolePage />
     </div>
   );
