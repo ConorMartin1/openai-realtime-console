@@ -1,0 +1,39 @@
+.review-page {
+    header {
+      .title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 2rem;
+      }
+    }
+  
+    main {
+      .grid {
+        display: grid;
+        grid-template-columns: 60% 40%;
+        gap: 1.5rem;
+      }
+  
+      .column-a {
+        .section-title {
+          font-size: 1.5rem;
+          font-weight: bold;
+          margin-bottom: 1rem;
+        }
+  
+        .feedback-item {
+          .field {
+            font-weight: bold;
+          }
+  
+          .value {
+            margin-left: 0.5rem;
+          }
+        }
+      }
+  
+      .column-b {
+        // Add any additional styles for the right column
+      }
+    }
+  }
