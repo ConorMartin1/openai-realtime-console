@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Mic, Square, Loader2 } from 'lucide-react';
+import avatar from '../../assets/AvatarActive2.gif';
+import avatarStill from '../../assets/Avatar1Still.png';
+import avatarStill2 from '../../assets/avatarframe1.gif';
+import astronautStill from '../../assets/AvatarStill.png';
+import astronaut from '../../assets/Avatargif.gif';
 
 interface RecordingCircleProps {
   isRecording: boolean;
@@ -37,11 +42,20 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
           transition-all duration-300
           ${isConnected ? 'cursor-pointer' : 'cursor-not-allowed opacity-50'}
           ${isRecording 
-            ? 'bg-red-500 hover:bg-red-600' 
+            ? 'bg-white hover:white border border-indigo-600' 
             : 'bg-indigo-600 hover:bg-indigo-700'
           }
         `}
       >
+        <img 
+        src={isRecording ? astronaut : astronautStill} 
+        alt="Recording indicator"
+        className={`
+          w-full h-full
+    object-cover
+    rounded-full
+        `}
+    />
         {/* Pulsing ring when recording */}
         {isRecording && (
           <div className="absolute inset-0">
@@ -57,13 +71,13 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
         )}
 
         {/* Icon */}
-        <div className="text-white">
+        {/* <div className="text-white">
           {isRecording ? (
             <Square className="w-12 h-12" />
           ) : (
             <Mic className="w-12 h-12" />
           )}
-        </div>
+        </div> */}
       </button>
 
       {/* Connect/Disconnect Button */}
@@ -93,7 +107,7 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
       <div className="text-sm font-medium text-gray-500">
         {!isConnected && 'Not connected'}
         {isConnected && !isRecording && 'Ready to record'}
-        {isConnected && isRecording && 'Recording...'}
+        {isConnected && isRecording && 'I\'m listening...'}
       </div>
     </div>
   );
