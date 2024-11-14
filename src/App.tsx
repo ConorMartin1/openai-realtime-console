@@ -1,12 +1,18 @@
 import React from 'react';
-import ConsolePage from './pages/ConsolePage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import ConsolePage from './pages/ConsolePage/ConsolePage';
+import ReviewPage from './pages/ReviewPage/ReviewPage';
 
 function App() {
-  console.log("App is rendering"); // Add this to check if App renders
+  console.log("App is rendering");
+
   return (
-    <div>
-      <ConsolePage />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ConsolePage />} />
+        <Route path="/review" element={<ReviewPage />} />
+      </Routes>
+    </Router>
   );
 }
 
