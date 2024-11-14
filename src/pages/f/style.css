@@ -1,0 +1,425 @@
+.settings {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .settings .div {
+    background-color: #ffffff;
+    height: 1522px;
+    position: relative;
+    width: 1280px;
+  }
+  
+  .settings .overlap {
+    background-color: var(--primary);
+    height: 110px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 1280px;
+  }
+  
+  .settings .text-wrapper {
+    color: #ffffff;
+    font-family: var(--page-header-2-font-family);
+    font-size: var(--page-header-2-font-size);
+    font-style: var(--page-header-2-font-style);
+    font-weight: var(--page-header-2-font-weight);
+    left: 23px;
+    letter-spacing: var(--page-header-2-letter-spacing);
+    line-height: var(--page-header-2-line-height);
+    position: absolute;
+    top: 17px;
+    white-space: nowrap;
+    width: 955px;
+  }
+  
+  .settings .group {
+    height: 259px;
+    left: 23px;
+    position: absolute;
+    top: 289px;
+    width: 844px;
+  }
+  
+  .settings .overlap-group {
+    height: 259px;
+    position: relative;
+    width: 840px;
+  }
+  
+  .settings .rectangle {
+    background-color: #e8dab2;
+    border-radius: 10px;
+    height: 259px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 834px;
+  }
+  
+  .settings .p {
+    color: #000000;
+    font-family: var(--single-line-body-base-font-family);
+    font-size: var(--single-line-body-base-font-size);
+    font-style: var(--single-line-body-base-font-style);
+    font-weight: var(--single-line-body-base-font-weight);
+    left: 422px;
+    letter-spacing: var(--single-line-body-base-letter-spacing);
+    line-height: var(--single-line-body-base-line-height);
+    position: absolute;
+    top: 54px;
+    width: 348px;
+  }
+  
+  .settings .select-field-instance {
+    border-radius: 10px !important;
+    display: flex !important;
+    height: 112px !important;
+    left: 22px !important;
+    position: absolute !important;
+    top: 24px !important;
+    width: 295px !important;
+  }
+  
+  .settings .design-component-instance-node {
+    margin-bottom: unset !important;
+  }
+  
+  .settings .text-wrapper-2 {
+    color: #000000;
+    font-family: var(--single-line-body-base-font-family);
+    font-size: var(--single-line-body-base-font-size);
+    font-style: var(--single-line-body-base-font-style);
+    font-weight: var(--single-line-body-base-font-weight);
+    left: 807px;
+    letter-spacing: var(--single-line-body-base-letter-spacing);
+    line-height: var(--single-line-body-base-line-height);
+    position: absolute;
+    top: 29px;
+    width: 33px;
+  }
+  
+  .settings .group-2 {
+    height: 56px;
+    left: 18px;
+    position: absolute;
+    top: 136px;
+    width: 750px;
+  }
+  
+  .settings .text-wrapper-3 {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 16px;
+    font-weight: 400;
+    left: 400px;
+    letter-spacing: 0;
+    line-height: 16px;
+    position: absolute;
+    top: 24px;
+    width: 348px;
+  }
+  
+  .settings .select-field-2 {
+    border-radius: 10px !important;
+    display: flex !important;
+    height: 56px !important;
+    left: 0 !important;
+    position: absolute !important;
+    top: 0 !important;
+    width: 291px !important;
+  }
+  
+  .settings .select-field-3 {
+    border-radius: 7.9px !important;
+    margin-bottom: -15.42px !important;
+  }
+  
+  .settings .overlap-wrapper {
+    height: 146px;
+    left: 23px;
+    position: absolute;
+    top: 1103px;
+    width: 844px;
+  }
+  
+  .settings .overlap-2 {
+    height: 146px;
+    position: relative;
+    width: 840px;
+  }
+  
+  .settings .rectangle-2 {
+    background-color: #e8dab2;
+    border-radius: 10px;
+    height: 146px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 834px;
+  }
+  
+  .settings .overlap-group-wrapper {
+    height: 390px;
+    left: 23px;
+    position: absolute;
+    top: 632px;
+    width: 842px;
+  }
+  
+  .settings .overlap-3 {
+    height: 390px;
+    position: relative;
+    width: 840px;
+  }
+  
+  .settings .rectangle-3 {
+    background-color: #e8dab2;
+    border-radius: 10px;
+    height: 390px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 834px;
+  }
+  
+  .settings .text-wrapper-4 {
+    color: #000000;
+    font-family: var(--single-line-body-base-font-family);
+    font-size: var(--single-line-body-base-font-size);
+    font-style: var(--single-line-body-base-font-style);
+    font-weight: var(--single-line-body-base-font-weight);
+    left: 807px;
+    letter-spacing: var(--single-line-body-base-letter-spacing);
+    line-height: var(--single-line-body-base-line-height);
+    position: absolute;
+    top: 43px;
+    width: 33px;
+  }
+  
+  .settings .group-3 {
+    height: 73px;
+    left: 18px;
+    position: absolute;
+    top: 136px;
+    width: 756px;
+  }
+  
+  .settings .text-wrapper-5 {
+    color: #000000;
+    font-family: "Inter-Regular", Helvetica;
+    font-size: 16px;
+    font-weight: 400;
+    left: 400px;
+    letter-spacing: 0;
+    line-height: 16px;
+    position: absolute;
+    top: 28px;
+    width: 354px;
+  }
+  
+  .settings .select-field-4 {
+    border-radius: 10px !important;
+    display: flex !important;
+    height: 35px !important;
+    left: 0 !important;
+    position: absolute !important;
+    top: 0 !important;
+    width: 291px !important;
+  }
+  
+  .settings .select-field-5 {
+    border-radius: 7.9px !important;
+    margin-bottom: -36.36px !important;
+  }
+  
+  .settings .group-4 {
+    height: 73px;
+    left: 18px;
+    position: absolute;
+    top: 44px;
+    width: 756px;
+  }
+  
+  .settings .group-5 {
+    height: 73px;
+    left: 18px;
+    position: absolute;
+    top: 229px;
+    width: 756px;
+  }
+  
+  .settings .for-better-outcomes {
+    color: #000000;
+    font-family: var(--body-font-family);
+    font-size: var(--body-font-size);
+    font-style: var(--body-font-style);
+    font-weight: var(--body-font-weight);
+    left: 25px;
+    letter-spacing: var(--body-letter-spacing);
+    line-height: var(--body-line-height);
+    position: absolute;
+    top: 129px;
+    width: 806px;
+  }
+  
+  .settings .button-instance {
+    background-color: #371600 !important;
+    display: flex !important;
+    height: 44px !important;
+    left: 192px !important;
+    position: absolute !important;
+    top: 1374px !important;
+    width: 110px !important;
+  }
+  
+  .settings .k-instance {
+    height: 20px !important;
+    margin-left: -5.00px !important;
+    position: relative !important;
+    width: 20px !important;
+  }
+  
+  .settings .button-2 {
+    margin-right: -5.00px !important;
+  }
+  
+  .settings .button-3 {
+    align-items: center;
+    background-color: #371600;
+    border-radius: var(--button-shape-button-corner-radius);
+    display: flex;
+    gap: var(--spacing-horizontal-snudge);
+    height: 44px;
+    justify-content: center;
+    left: 568px;
+    padding: var(--spacing-vertical-snudge) var(--spacing-horizontal-m)
+      var(--spacing-vertical-snudge) var(--spacing-horizontal-m);
+    position: absolute;
+    top: 1374px;
+    width: 120px;
+  }
+  
+  .settings .container-2 {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: var(--spacing-horizontal-XS);
+    height: 20px;
+    justify-content: center;
+    margin-right: -5.00px;
+    position: relative;
+  }
+  
+  .settings .div-wrapper {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 22px;
+    margin-bottom: -1.00px;
+    margin-top: -1.00px;
+    padding: 0px 0px 2px;
+    position: relative;
+  }
+  
+  .settings .text-2 {
+    color: var(--theme-neutral-foreground-on-brand-rest);
+    font-family: var(--body-1-strong-font-family);
+    font-size: var(--body-1-strong-font-size);
+    font-style: var(--body-1-strong-font-style);
+    font-weight: var(--body-1-strong-font-weight);
+    letter-spacing: var(--body-1-strong-letter-spacing);
+    line-height: var(--body-1-strong-line-height);
+    margin-top: -1.00px;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+  }
+  
+  .settings .focus-ring {
+    border: 2px solid;
+    border-color: var(--theme-neutral-stroke-focus-2-rest);
+    border-radius: var(--button-shape-button-corner-radius);
+    height: 48px;
+    left: -2px;
+    overflow: hidden;
+    position: absolute;
+    top: -2px;
+    width: 124px;
+  }
+  
+  .settings .inner-stroke {
+    border: 1px solid;
+    border-color: var(--theme-neutral-stroke-focus-1-rest);
+    border-radius: var(--button-shape-button-corner-radius);
+    height: 44px;
+    width: 120px;
+  }
+  
+  .settings .button-4 {
+    background-color: #371600 !important;
+    display: flex !important;
+    height: 45px !important;
+    left: 396px !important;
+    position: absolute !important;
+    top: 1373px !important;
+    width: 78px !important;
+  }
+  
+  .settings .k-2 {
+    height: 20px !important;
+    margin-left: -3.50px !important;
+    position: relative !important;
+    width: 20px !important;
+  }
+  
+  .settings .button-5 {
+    margin-right: -3.50px !important;
+  }
+  
+  .settings .text-wrapper-6 {
+    color: #000000;
+    font-family: var(--h5-font-family);
+    font-size: var(--h5-font-size);
+    font-style: var(--h5-font-style);
+    font-weight: var(--h5-font-weight);
+    left: 25px;
+    letter-spacing: var(--h5-letter-spacing);
+    line-height: var(--h5-line-height);
+    position: absolute;
+    top: 251px;
+    white-space: nowrap;
+  }
+  
+  .settings .text-wrapper-7 {
+    color: #000000;
+    font-family: var(--h5-font-family);
+    font-size: var(--h5-font-size);
+    font-style: var(--h5-font-style);
+    font-weight: var(--h5-font-weight);
+    left: 25px;
+    letter-spacing: var(--h5-letter-spacing);
+    line-height: var(--h5-line-height);
+    position: absolute;
+    top: 1065px;
+    white-space: nowrap;
+  }
+  
+  .settings .text-wrapper-8 {
+    color: #000000;
+    font-family: var(--h5-font-family);
+    font-size: var(--h5-font-size);
+    font-style: var(--h5-font-style);
+    font-weight: var(--h5-font-weight);
+    left: 25px;
+    letter-spacing: var(--h5-letter-spacing);
+    line-height: var(--h5-line-height);
+    position: absolute;
+    top: 594px;
+    white-space: nowrap;
+  }
+  
