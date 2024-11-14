@@ -4,7 +4,6 @@ import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js';
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js';
 import RecordingCircle from '../components/RecordingCircle/RecordingCircle';
 import AudioVisualizer from '../components/AudioVisualizer/AudioVisualizer';
-import avatar from '../assets/Avatar1.gif';
 
 const LOCAL_RELAY_SERVER_URL: string = process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 

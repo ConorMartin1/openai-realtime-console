@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { Mic, Square, Loader2 } from 'lucide-react';
-import avatar from '../../assets/AvatarActive2.gif';
-import avatarStill from '../../assets/Avatar1Still.png';
-import avatarStill2 from '../../assets/avatarframe1.gif';
 import astronautStill from '../../assets/AvatarStill.png';
 import astronaut from '../../assets/Avatargif.gif';
 
@@ -52,8 +49,8 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
         alt="Recording indicator"
         className={`
           w-full h-full
-    object-cover
-    rounded-full
+          object-cover
+          rounded-full
         `}
     />
         {/* Pulsing ring when recording */}
@@ -69,15 +66,6 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
             <div className="absolute inset-0 rounded-full border-4 border-indigo-400/30" />
           </div>
         )}
-
-        {/* Icon */}
-        {/* <div className="text-white">
-          {isRecording ? (
-            <Square className="w-12 h-12" />
-          ) : (
-            <Mic className="w-12 h-12" />
-          )}
-        </div> */}
       </button>
 
       {/* Connect/Disconnect Button */}
