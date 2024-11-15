@@ -1,0 +1,42 @@
+/* General Container */
+.settings-container {
+    background-color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Form Section */
+  .form-section {
+    width: 80%;
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .section-title {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .form-content {
+    margin-top: 10px;
+  }
+  
+  .settings-select {
+    width: 100%;
+  }
+  
+  /* Buttons */
+  .button-row {
+    margin: 20px 0;
+  }
+  
+  .settings-button {
+    margin: 0 10px;
+    background-color: #371600;
+    border-color: #371600;
+  }
+  

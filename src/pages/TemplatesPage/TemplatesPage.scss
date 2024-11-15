@@ -1,0 +1,54 @@
+.templates-container {
+    background-color: white;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .templates-inner {
+    background-color: white;
+    position: relative;
+    width: 70%;
+    text-align: center;
+    margin-left: 15%;
+  }
+  
+  .templates-header {
+    width: 100%;
+    background-color: #001529;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  
+  .templates-header-title {
+    color: white;
+    text-align: center;
+    margin-top: 39px;
+  }
+  
+  .templates-quick-start {
+    margin-top: 72px;
+  }
+  
+  .templates-quick-start-text {
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .templates-cards {
+    margin-top: 100px;
+  }
+  
+  .templates-card-image {
+    height: 126px;
+    object-fit: cover;
+  }
+  
+  .templates-custom-card {
+    margin-top: 100px;
+  }
+  
+  .templates-custom-image {
+    height: 99px;
+    object-fit: cover;
+  }

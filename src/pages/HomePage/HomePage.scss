@@ -1,0 +1,61 @@
+.homeContainer {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centeredImage {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.profileImage {
+  width: 30%;
+  max-width: 160px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 50%;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.centeredHeader {
+  margin-top: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.cardsSection {
+  width: 70%;
+  margin-top: 40px;
+}
+
+.cardsRow {
+  display: flex;
+  justify-content: space-around;
+}
+
+.cardCol {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  text-align: center;
+  background-color: #c0d8e0;
+}
+
+.cardTitle {
+  color: #000537;
+}
+
+.cardParagraph {
+  color: #555;
+}

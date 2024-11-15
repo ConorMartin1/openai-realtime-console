@@ -4,8 +4,9 @@ import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js';
 import { WavRecorder, WavStreamPlayer } from '../../lib/wavtools/index.js';
 import RecordingCircle from '../../components/RecordingCircle/RecordingCircle';
 import AudioVisualizer from '../../components/AudioVisualizer/AudioVisualizer';
-import {defaultInstructions} from '../../components/CoachInstructions/defaultInstructions';
+import { defaultInstructions } from '../../components/CoachInstructions/defaultInstructions';
 import { useNavigate } from 'react-router-dom';
+import Banner from '../../components/Banner/Banner';
 
 const LOCAL_RELAY_SERVER_URL: string = process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
@@ -22,8 +23,8 @@ const ConsolePage: React.FC = () => {
   const apiKey = LOCAL_RELAY_SERVER_URL
     ? ''
     : localStorage.getItem('tmp::voice_api_key') ||
-      prompt('OpenAI API Key') ||
-      '';
+    prompt('OpenAI API Key') ||
+    '';
   if (apiKey !== '') {
     localStorage.setItem('tmp::voice_api_key', apiKey);
   }
@@ -46,16 +47,16 @@ const ConsolePage: React.FC = () => {
       LOCAL_RELAY_SERVER_URL
         ? { url: LOCAL_RELAY_SERVER_URL }
         : {
-            apiKey: apiKey,
-            dangerouslyAllowAPIKeyInBrowser: true,
-          }
+          apiKey: apiKey,
+          dangerouslyAllowAPIKeyInBrowser: true,
+        }
     )
   );
 
   // Audio visualization effect
   useEffect(() => {
     let animationFrameId: number;
-    
+
     const updateAudioData = () => {
       if (isRecording) {
         const frequencies = wavRecorderRef.current.getFrequencies('voice');
@@ -122,12 +123,12 @@ const ConsolePage: React.FC = () => {
   // Recording handlers
   const handleStartRecording = useCallback(async () => {
     if (!isConnected) return;
-    
+
     setIsRecording(true);
     const client = clientRef.current;
     const wavRecorder = wavRecorderRef.current;
     const wavStreamPlayer = wavStreamPlayerRef.current;
-    
+
     const trackSampleOffset = await wavStreamPlayer.interrupt();
     if (trackSampleOffset?.trackId) {
       const { trackId, offset } = trackSampleOffset;
@@ -168,20 +169,7 @@ const ConsolePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <nav className="border-b">
-      <button onClick={goToReviewPage} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">
-        Go to Review Page
-      </button>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <div className="ml-4 text-xl font-bold bg-gradient-to-r from-indigo-600 to-pink-500 bg-clip-text text-transparent">
-                SpeechCraft
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Banner />
 
       <main className="flex-grow flex flex-col items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -200,19 +188,23 @@ const ConsolePage: React.FC = () => {
 
         {/* Audio Visualizer */}
         <div className="mt-8 w-full max-w-2xl">
-          <AudioVisualizer 
+          <AudioVisualizer
             audioData={audioData}
             isRecording={isRecording}
           />
-        </div>
 
+        </div>
+        
         {/* Transcript Area */}
+        <button onClick={goToReviewPage} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">
+          Go to Review Page
+        </button>
         {isConnected && (
           <div className="mt-12 w-full max-w-2xl bg-gray-50 rounded-lg p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Transcript</h2>
             <div className="space-y-4">
               {items
-                .filter(item => 
+                .filter(item =>
                   !item.formatted?.text || ''.includes('You are an AI Speech Coach')
                 )
                 .map((item, index) => (
@@ -223,11 +215,11 @@ const ConsolePage: React.FC = () => {
                     {item.formatted.transcript || item.formatted.text || 'Processing...'}
                   </div>
                 ))}
-                {items.length === 0 && (
-                  <div className="text-gray-500">
-                    Press and hold the button to start recording
-                  </div>
-                )
+              {items.length === 0 && (
+                <div className="text-gray-500">
+                  Press and hold the button to start recording
+                </div>
+              )
               }
             </div>
           </div>
