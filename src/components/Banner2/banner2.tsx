@@ -1,19 +1,27 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
 import { Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import avatarImage from '../../assets/AvatarStill.png';
 
 const Banner2 = () => {
+    const navigate = useNavigate();
+
+    const handleImageClick = () => {
+        navigate('/home2');
+    };
+
     return (
         <header className="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0 flex items-center">
                         <img
-                            className="aspect-square rounded-full hover:scale-105 transition-transform"
+                            className="aspect-square rounded-full hover:scale-105 transition-transform cursor-pointer"
                             src={avatarImage}
                             alt="Spark logo"
+                            onClick={handleImageClick}
                             style={{
                                 objectFit: 'cover',
                                 width: '40px',

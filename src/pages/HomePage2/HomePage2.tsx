@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Text style={{ fontSize: 16, color: 'rgba(0, 0, 0, 0.85)' }}>
                 {description}
             </Text>
-            <Link to="/console" style={{ marginTop: 'auto', textDecoration: 'none' }}>
+            <Link to="/settings2" style={{ marginTop: 'auto', textDecoration: 'none' }}>
                 <Button
                     type={buttonType}
                     size="large"
@@ -81,9 +81,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon }) =
     <Card
         bordered={false}
         style={{
-            background: '#F5F3E9',
+            background: '#efe6d2',
             padding: '24px',
-            borderRadius: 16,
+            borderRadius: 25,
             height: '250px',
             display: 'flex',
             flexDirection: 'column',
@@ -109,7 +109,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon }) =
 
 const FeatureSection: React.FC = () => (
     <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%' }}>
-        <Row gutter={24}>
+        <Row gutter={[36, 24]}>
             <Col span={8}>
                 <FeatureCard
                     icon={<Brain size={32} color="#6A6A6A" />}
