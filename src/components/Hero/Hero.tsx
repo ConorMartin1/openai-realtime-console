@@ -1,10 +1,45 @@
 import React from 'react';
 import { Typography, Image } from 'antd';
-import avatar from '../../assets/AvatarStill.png';
 
 const { Title, Text } = Typography;
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  title: string;
+  description: string;
+  backgroundColor?: string;
+  imageSrc: string;
+  imageAlt?: string;
+  titleColor?: string;
+  descriptionColor?: string;
+  paddingTop?: string | number;
+  paddingBottom?: string | number;
+  imageSize?: number;
+  maxWidth?: number | string;
+}
+
+const HeroSection: React.FC<HeroSectionProps> = ({
+  title,
+  description,
+  backgroundColor = '#f0efea',
+  imageSrc,
+  imageAlt = 'Hero Image',
+  titleColor = '#000000',
+  descriptionColor = '#000000',
+  paddingTop = '140px',
+  paddingBottom = '100px',
+  imageSize = 120,
+  maxWidth = '600px',
+}) => {
+  // Function to split text by newlines and create JSX with line breaks
+  const renderTextWithBreaks = (text: string) => {
+    return text.split('\\n').map((line, index, array) => (
+      <React.Fragment key={index}>
+        {line}
+        {index < array.length - 1 && <br />}
+      </React.Fragment>
+    ));
+  };
+
   return (
     <div
       style={{
@@ -12,22 +47,22 @@ const HeroSection = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '140px 20px 100px',
+        padding: `${paddingTop} 20px ${paddingBottom}`,
         textAlign: 'center',
-        backgroundColor: '#f0efea'
+        backgroundColor
       }}
     >
-      <div style={{ maxWidth: '600px' }}>
+      <div style={{ maxWidth }}>
         <Image
-          alt="Centered Image"
-          src={avatar}
+          alt={imageAlt}
+          src={imageSrc}
           preview={false}
           style={{
             objectFit: 'cover',
             cursor: 'pointer',
             boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-            width: '120px',
-            height: '120px',
+            width: `${imageSize}px`,
+            height: `${imageSize}px`,
             borderRadius: '50%',
             transition: 'transform 0.2s',
             marginBottom: '1rem'
@@ -44,23 +79,22 @@ const HeroSection = () => {
             marginBottom: '16px',
             lineHeight: 1.2,
             letterSpacing: '-0.02em',
-            color: '#000000'
+            color: titleColor
           }}
         >
-          Customise your AI coach
+          {renderTextWithBreaks(title)}
         </Title>
 
         <Text
           style={{
             fontSize: '20px',
-            color: '#000000',
+            color: descriptionColor,
             fontWeight: 400,
-            marginTop: '8px'
+            marginTop: '8px',
+            whiteSpace: 'pre-line'
           }}
         >
-          Adjust the coach settings and make it
-          <br />
-          more specific for your presentation
+          {renderTextWithBreaks(description)}
         </Text>
       </div>
     </div>

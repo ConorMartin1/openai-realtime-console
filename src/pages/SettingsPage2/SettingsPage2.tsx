@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import Banner2 from "../../components/Banner2/banner2";
 import HeroSection from '../../components/Hero/Hero';
 import Footer from '../../components/Footer/Footer'
+import avatar from '../../assets/AvatarStill.png';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -40,7 +41,11 @@ const SettingsPage2 = () => {
   return (
     <Layout className="min-h-screen bg-gray-50">
       <Banner2 />
-      <HeroSection />
+      <HeroSection
+        title="Customise your AI coach"
+        description="Adjust the coach settings and make it\nmore specific for your presentation"
+        imageSrc={avatar}
+      />
       <Content className="p-8">
         <div className="max-w-4xl mx-auto">
 

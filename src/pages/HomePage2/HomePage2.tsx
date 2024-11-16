@@ -53,7 +53,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Text style={{ fontSize: 16, color: 'rgba(0, 0, 0, 0.85)' }}>
                 {description}
             </Text>
-            <Link to="/settings2" style={{ marginTop: 'auto', textDecoration: 'none' }}>
+            <Link to="/templates2" style={{ marginTop: 'auto', textDecoration: 'none' }}>
                 <Button
                     type={buttonType}
                     size="large"
@@ -81,7 +81,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ title, description, icon }) =
     <Card
         bordered={false}
         style={{
-            background: '#efe6d2',
+            background: '#f6f6f6',
             padding: '24px',
             borderRadius: 25,
             height: '250px',

@@ -7,6 +7,7 @@ import HomePage2 from './pages/HomePage2/HomePage2';
 import SettingsPage from './pages/SettingsPage/SettingsPage';
 import SettingsPage2 from './pages/SettingsPage2/SettingsPage2';
 import TemplatesPage from './pages/TemplatesPage/TemplatesPage';
+import TemplatesPage2 from './pages/TemplatesPage2/TemplatesPage2';
 
 function App() {
   console.log("App is rendering");
@@ -21,6 +22,7 @@ function App() {
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/settings2" element={<SettingsPage2 />} />
         <Route path="/templates" element={<TemplatesPage />} />
+        <Route path="/templates2" element={<TemplatesPage2 />} />
       </Routes>
     </Router>
   );
