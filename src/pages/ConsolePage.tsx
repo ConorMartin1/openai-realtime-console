@@ -30,6 +30,7 @@ const ConsolePage: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [items, setItems] = useState<ItemType[]>([]);
   const [audioData, setAudioData] = useState<number[]>(Array(50).fill(0));
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Refs
   const wavRecorderRef = useRef<WavRecorder>(
@@ -238,6 +239,44 @@ const ConsolePage: React.FC = () => {
     client.createResponse();
   }, []);
 
+  // File upload handler
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log('Selected file:', file);
+      addPdfReference(file);
+//      const pdfBuffer = fs.readFileSync(pdfFilePath);
+//      client.sendUserMessageContent([{ type: 'input_text', text: 'sdf' }]);
+    }
+  };
+
+  function addPdfReference(file: File){
+    // ...
+    /*
+    const client = clientRef.current;
+
+        // Read the file as a buffer
+    const reader = new FileReader();
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = function(event) {
+      if (event.target) {
+        const pdfBuffer = event.target.result;
+        const pdf = require('pdf-parse');
+
+        pdf(pdfBuffer).then((data: PDFDocumentProxy) => {
+          const textContent = data.text;
+          console.log(textContent); // This will log the extracted text
+    
+          // Send the text content using RealtimeClient
+          client.sendUserMessageContent([{ type: 'input_text', text: textContent }]);
+        });      
+      }
+    };*/
+  }
+
+
   // Setup effect
   useEffect(() => {
     const client = clientRef.current;
@@ -293,6 +332,9 @@ const ConsolePage: React.FC = () => {
           />
         </div>
 
+      {/* File Upload Button */}
+      <input type="file" onChange={handleFileUpload} />
+      
         {/* Transcript Area */}
         {isConnected && (
           <div className="mt-12 w-full max-w-2xl bg-gray-50 rounded-lg p-6">
@@ -303,17 +345,17 @@ const ConsolePage: React.FC = () => {
                   <span className="font-medium">
                     {item.role === 'user' ? 'You: ' : 'Assistant: '}
                   </span>
-                  {item.formatted.transcript || item.formatted.text || 'Processing...'}
-                </div>
-              ))}
-              {items.length === 0 && (
-                <div className="text-gray-500">
-                  Press and hold the button to start recording
-                </div>
-              )}
+              {item.formatted.transcript || item.formatted.text || 'Processing...'}
             </div>
-          </div>
-        )}
+          ))}
+          {items.length === 0 && (
+                <div className="text-gray-500">
+              Press and hold the button to start recording
+            </div>
+          )}
+            </div>
+        </div>
+      )}
       </main>
     </div>
   );
