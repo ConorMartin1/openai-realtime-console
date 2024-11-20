@@ -247,7 +247,7 @@ const HomePage2: React.FC = () => {
                                     buttonText="Talk to Spark"
                                     buttonType="primary"
                                 />
-
+                                {/* change with the alt avatar instead */}
                                 <Image
                                     alt="Centered Image"
                                     src={avatar}
