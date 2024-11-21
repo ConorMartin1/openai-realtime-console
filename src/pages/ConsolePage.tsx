@@ -351,7 +351,7 @@ const ConsolePage: React.FC = () => {
             fileInput.click();
         }
       }}>Upload your content</div>
-      <input type="file" id="fileInput" style={{ display: 'none' }} onChange={handleFileUpload} />
+      <input type="file" id="fileInput" style={{ display: 'none' }} accept=".pdf" onChange={handleFileUpload} />
 
         {/* Transcript Area */}
         {isConnected && (
