@@ -4,6 +4,7 @@ import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js';
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js';
 import RecordingCircle from '../components/RecordingCircle/RecordingCircle';
 import AudioVisualizer from '../components/AudioVisualizer/AudioVisualizer';
+import * as pdfjsLib from 'pdfjs-dist';
 
 const LOCAL_RELAY_SERVER_URL: string = process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
@@ -30,6 +31,7 @@ const ConsolePage: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [items, setItems] = useState<ItemType[]>([]);
   const [audioData, setAudioData] = useState<number[]>(Array(50).fill(0));
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Refs
   const wavRecorderRef = useRef<WavRecorder>(
@@ -238,6 +240,55 @@ const ConsolePage: React.FC = () => {
     client.createResponse();
   }, []);
 
+  // File upload handler
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log('Selected file:', file);
+      addPdfReference(file);
+    }
+  };
+
+  const addPdfReference = async (file: File) => {
+    const reader = new FileReader();
+    
+    reader.onload = async (event) => {
+      const client = clientRef.current;
+      const typedArray = new Uint8Array(event.target?.result as ArrayBuffer);
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+      const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+      let textContent = '';
+  
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const text = await page.getTextContent();
+        text.items.forEach((item: any) => {
+          textContent += item.str + ' ';
+        });
+      }
+
+      // Update the session with reference text
+      let updateInstructions = 'the following text gives you background on the subject: ';
+      updateInstructions += textContent;
+      client.updateSession({
+        instructions: updateInstructions
+      });
+      client.sendUserMessageContent([{ type: 'input_text', text: textContent }]);
+
+      client.updateSession({ input_audio_transcription: { model: 'whisper-1' } });
+
+      console.log('Extracted text:', textContent);
+      // You can now use the extracted text as needed
+    };
+  
+    reader.readAsArrayBuffer(file);
+    
+  };
+
+
   // Setup effect
   useEffect(() => {
     const client = clientRef.current;
@@ -293,6 +344,15 @@ const ConsolePage: React.FC = () => {
           />
         </div>
 
+      {/* File Upload Button */}
+      <div onClick={() => {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput) {
+            fileInput.click();
+        }
+      }}>Upload your content</div>
+      <input type="file" id="fileInput" style={{ display: 'none' }} accept=".pdf" onChange={handleFileUpload} />
+
         {/* Transcript Area */}
         {isConnected && (
           <div className="mt-12 w-full max-w-2xl bg-gray-50 rounded-lg p-6">
@@ -303,17 +363,17 @@ const ConsolePage: React.FC = () => {
                   <span className="font-medium">
                     {item.role === 'user' ? 'You: ' : 'Assistant: '}
                   </span>
-                  {item.formatted.transcript || item.formatted.text || 'Processing...'}
-                </div>
-              ))}
-              {items.length === 0 && (
-                <div className="text-gray-500">
-                  Press and hold the button to start recording
-                </div>
-              )}
+              {item.formatted.transcript || item.formatted.text || 'Processing...'}
             </div>
-          </div>
-        )}
+          ))}
+          {items.length === 0 && (
+                <div className="text-gray-500">
+              Press and hold the button to start recording
+            </div>
+          )}
+            </div>
+        </div>
+      )}
       </main>
     </div>
   );
