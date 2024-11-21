@@ -4,6 +4,7 @@ import { ItemType } from '@openai/realtime-api-beta/dist/lib/client.js';
 import { WavRecorder, WavStreamPlayer } from '../lib/wavtools/index.js';
 import RecordingCircle from '../components/RecordingCircle/RecordingCircle';
 import AudioVisualizer from '../components/AudioVisualizer/AudioVisualizer';
+import * as pdfjsLib from 'pdfjs-dist';
 
 const LOCAL_RELAY_SERVER_URL: string = process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
@@ -249,9 +250,43 @@ const ConsolePage: React.FC = () => {
     }
   };
 
-  function addPdfReference(file: File){
-    // ...
-  }
+  const addPdfReference = async (file: File) => {
+    const reader = new FileReader();
+    
+    reader.onload = async (event) => {
+      const client = clientRef.current;
+      const typedArray = new Uint8Array(event.target?.result as ArrayBuffer);
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+      const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+      let textContent = '';
+  
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const text = await page.getTextContent();
+        text.items.forEach((item: any) => {
+          textContent += item.str + ' ';
+        });
+      }
+
+      // Update the session with reference text
+      let updateInstructions = 'the following text gives you background on the subject: ';
+      updateInstructions += textContent;
+      client.updateSession({
+        instructions: updateInstructions
+      });
+      client.sendUserMessageContent([{ type: 'input_text', text: textContent }]);
+
+      client.updateSession({ input_audio_transcription: { model: 'whisper-1' } });
+
+      console.log('Extracted text:', textContent);
+      // You can now use the extracted text as needed
+    };
+  
+    reader.readAsArrayBuffer(file);
+    
+  };
 
 
   // Setup effect
