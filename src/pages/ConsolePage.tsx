@@ -246,34 +246,11 @@ const ConsolePage: React.FC = () => {
       setSelectedFile(file);
       console.log('Selected file:', file);
       addPdfReference(file);
-//      const pdfBuffer = fs.readFileSync(pdfFilePath);
-//      client.sendUserMessageContent([{ type: 'input_text', text: 'sdf' }]);
     }
   };
 
   function addPdfReference(file: File){
     // ...
-    /*
-    const client = clientRef.current;
-
-        // Read the file as a buffer
-    const reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-
-    reader.onload = function(event) {
-      if (event.target) {
-        const pdfBuffer = event.target.result;
-        const pdf = require('pdf-parse');
-
-        pdf(pdfBuffer).then((data: PDFDocumentProxy) => {
-          const textContent = data.text;
-          console.log(textContent); // This will log the extracted text
-    
-          // Send the text content using RealtimeClient
-          client.sendUserMessageContent([{ type: 'input_text', text: textContent }]);
-        });      
-      }
-    };*/
   }
 
 
@@ -333,8 +310,14 @@ const ConsolePage: React.FC = () => {
         </div>
 
       {/* File Upload Button */}
-      <input type="file" onChange={handleFileUpload} />
-      
+      <div onClick={() => {
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput) {
+            fileInput.click();
+        }
+      }}>Upload your content</div>
+      <input type="file" id="fileInput" style={{ display: 'none' }} onChange={handleFileUpload} />
+
         {/* Transcript Area */}
         {isConnected && (
           <div className="mt-12 w-full max-w-2xl bg-gray-50 rounded-lg p-6">
