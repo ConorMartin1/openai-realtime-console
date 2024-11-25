@@ -1,16 +1,18 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { Typography, Card, Layout, Row, Col, Space, Image, Spin } from "antd";
-import avatar from '../../assets/AvatarStill.png';
+import avatar from '../../assets/AvatarYellow.png';
 import Banner2 from "../../components/Banner2/banner2";
 import { CheckCircleOutlined, WarningOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import FeedbackCard from "../../components/FeedbackCard/FeedbackCard";
+import Footer from "../../components/Footer/Footer";
 
 const ReviewPage: React.FC = () => {
   const location = useLocation();
   const { items } = location.state || {};
   const lastItem = items && items.length > 0 ? items[items.length - 1] : null;
   const lastItemTranscript = lastItem?.formatted?.transcript || "";
+  console.log(lastItemTranscript);
   const hasFetched = useRef(false);
 
   const { Title, Text } = Typography;
@@ -18,6 +20,7 @@ const ReviewPage: React.FC = () => {
 
   const [feedback, setFeedback] = useState<{
     summary?: string;
+    score?: string;
     breakdown?: { [key: string]: string };
   }>({});
   const [loading, setLoading] = useState(true);
@@ -38,7 +41,7 @@ const ReviewPage: React.FC = () => {
             {
               role: "system",
               content:
-                "Your job is to format the feedback of an AI Speech Coach. The coach has generated detailed feedback and finished it with a score. The user will provide that feedback in their message. Your response must ONLY be a JSON which contains a summary feedback paragraph and a breakdown of the key areas of the feedback with values on how the student did (Good, Great, Could be better: Following by a short paragraph explaining this further with constructive feedback). Label this part as 'breakdown'",
+                "Your job is to format the feedback of an AI Speech Coach. The coach has generated detailed feedback and finished it with a score. The user will provide that feedback in their message. Your response must ONLY be a JSON which contains a summary feedback paragraph and a breakdown of the key areas of the feedback with values on how the student did (Good, Great, Could be better: Following by a short paragraph explaining this further with constructive feedback). Label this part as 'breakdown' Include the score, labelled 'score'",
             },
             { role: "user", content: lastItemTranscript },
           ],
@@ -51,6 +54,8 @@ const ReviewPage: React.FC = () => {
         const rawContent = data.choices[0].message.content;
         const jsonContent = rawContent.replace(/^```json\s*|```$/g, "");
         const content = JSON.parse(jsonContent);
+        console.log('This is the json returned');
+        console.log(content);
 
         setFeedback(content);
       } else {
@@ -70,7 +75,7 @@ const ReviewPage: React.FC = () => {
     }
   }, []);
 
-  const { summary, breakdown } = feedback;
+  const { summary, breakdown, score } = feedback;
 
   return (
     <Layout style={{ background: "#ffffff", minHeight: "100vh" }}>
@@ -111,13 +116,17 @@ const ReviewPage: React.FC = () => {
                 {loading ? (
                   <Spin size="large" />
                 ) : (
-                  <Text style={{ fontSize: 18, color: "#333" }}>{summary}</Text>
+                  <>
+                    <Text style={{ fontSize: 18, color: "#666" }}>Score: {score}</Text>
+                    <br />
+                    <Text style={{ fontSize: 16, color: "#333" }}>{summary}</Text>
+                  </>
                 )}
               </div>
             </Space>
           </div>
         </section>
-  
+
         {/* Breakdown Cards Section */}
         <div style={{ maxWidth: 1200, margin: "48px auto", textAlign: "center" }}>
           <Title
@@ -146,6 +155,7 @@ const ReviewPage: React.FC = () => {
             )}
           </Row>
         </div>
+        <Footer />
       </Content>
     </Layout>
   );
