@@ -7,6 +7,9 @@ import AudioVisualizer from '../../components/AudioVisualizer/AudioVisualizer';
 import { defaultInstructions } from '../../components/CoachInstructions/defaultInstructions';
 import { useNavigate } from 'react-router-dom';
 import Banner from '../../components/Banner/Banner';
+import { MessageCircle, User } from 'lucide-react';
+import SparkAvatar from '../../assets/AvatarStill.png';
+import './ConsolePage.scss';
 
 const LOCAL_RELAY_SERVER_URL: string = process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
@@ -18,8 +21,9 @@ interface RealtimeEvent {
 }
 
 const ConsolePage: React.FC = () => {
-  // Get API Key
   const navigate = useNavigate();
+  
+  // Get API Key
   const apiKey = LOCAL_RELAY_SERVER_URL
     ? ''
     : localStorage.getItem('tmp::voice_api_key') ||
@@ -108,6 +112,7 @@ const ConsolePage: React.FC = () => {
   // Disconnect handler
   const handleDisconnect = useCallback(async () => {
     setIsConnected(false);
+    setIsRecording(false);
     setItems([]);
 
     const client = clientRef.current;
@@ -120,30 +125,32 @@ const ConsolePage: React.FC = () => {
     await wavStreamPlayer.interrupt();
   }, []);
 
-  // Recording handlers
-  const handleStartRecording = useCallback(async () => {
+  // Toggle recording handler
+  const handleToggleRecording = useCallback(async () => {
     if (!isConnected) return;
 
-    setIsRecording(true);
-    const client = clientRef.current;
-    const wavRecorder = wavRecorderRef.current;
-    const wavStreamPlayer = wavStreamPlayerRef.current;
-
-    const trackSampleOffset = await wavStreamPlayer.interrupt();
-    if (trackSampleOffset?.trackId) {
-      const { trackId, offset } = trackSampleOffset;
-      await client.cancelResponse(trackId, offset);
+    if (!isRecording) {
+      // Start recording
+      setIsRecording(true);
+      const client = clientRef.current;
+      const wavRecorder = wavRecorderRef.current;
+      const wavStreamPlayer = wavStreamPlayerRef.current;
+      
+      const trackSampleOffset = await wavStreamPlayer.interrupt();
+      if (trackSampleOffset?.trackId) {
+        const { trackId, offset } = trackSampleOffset;
+        await client.cancelResponse(trackId, offset);
+      }
+      await wavRecorder.record((data) => client.appendInputAudio(data.mono));
+    } else {
+      // Stop recording
+      setIsRecording(false);
+      const client = clientRef.current;
+      const wavRecorder = wavRecorderRef.current;
+      await wavRecorder.pause();
+      client.createResponse();
     }
-    await wavRecorder.record((data) => client.appendInputAudio(data.mono));
-  }, [isConnected]);
-
-  const handleStopRecording = useCallback(async () => {
-    setIsRecording(false);
-    const client = clientRef.current;
-    const wavRecorder = wavRecorderRef.current;
-    await wavRecorder.pause();
-    client.createResponse();
-  }, []);
+  }, [isConnected, isRecording]);
 
   // Setup effect
   useEffect(() => {
@@ -171,60 +178,96 @@ const ConsolePage: React.FC = () => {
     <div className="min-h-screen bg-white flex flex-col">
       <Banner />
 
-      <main className="flex-grow flex flex-col items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900">AI Speech Coach</h1>
-          <p className="mt-2 text-gray-600">Practice your presentation with real-time AI feedback</p>
+      <div className="flex flex-col h-[calc(100vh-64px)]"> {/* Subtract banner height */}
+        {/* Main Content - Recording Interface */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex flex-col items-center">
+              <div className="text-center mb-12">
+                <h1 className="text-3xl font-bold text-gray-900">Chat with Spark</h1>
+                <p className="mt-2 text-gray-600">Practice your presentation and get feedback in real-time</p>
+              </div>
+
+              <RecordingCircle
+                isRecording={isRecording}
+                isConnected={isConnected}
+                onToggleRecording={handleToggleRecording}
+                onConnect={handleConnect}
+                onDisconnect={handleDisconnect}
+              />
+
+              {/* Audio Visualizer */}
+              <div className="mt-8 w-full max-w-2xl">
+                <AudioVisualizer
+                  audioData={audioData}
+                  isRecording={isRecording}
+                />
+              </div>
+
+              {/* Review Button */}
+              {isConnected && items.length > 0 && !isRecording && (
+                <button
+                  onClick={goToReviewPage}
+                  className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors duration-200 flex items-center gap-2"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  View Results & Transcript
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
-        <RecordingCircle
-          isRecording={isRecording}
-          isConnected={isConnected}
-          onStartRecording={handleStartRecording}
-          onStopRecording={handleStopRecording}
-          onConnect={handleConnect}
-          onDisconnect={handleDisconnect}
-        />
-
-        {/* Audio Visualizer */}
-        <div className="mt-8 w-full max-w-2xl">
-          <AudioVisualizer
-            audioData={audioData}
-            isRecording={isRecording}
-          />
-
-        </div>
-        
-        {/* Transcript Area */}
-        <button onClick={goToReviewPage} className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded">
-          Go to Review Page
-        </button>
+        {/* Fixed Transcript Section */}
         {isConnected && (
-          <div className="mt-12 w-full max-w-2xl bg-gray-50 rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">Transcript</h2>
-            <div className="space-y-4">
-              {items
-                .filter(item =>
-                  !item.formatted?.text || ''.includes('You are an AI Speech Coach')
-                )
-                .map((item, index) => (
-                  <div key={index} className="text-gray-600">
-                    <span className="font-medium">
-                      {item.role === 'user' ? 'You: ' : 'Assistant: '}
-                    </span>
-                    {item.formatted.transcript || item.formatted.text || 'Processing...'}
+          <div className="flex-none border-t border-gray-200 bg-white">
+            <div className="max-w-7xl mx-auto w-full">
+              <div className="border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900 p-4">Transcript</h2>
+              </div>
+              
+              <div className="h-64 overflow-y-auto p-4 space-y-4">
+                {items
+                  .filter(item =>
+                    !item.formatted?.text?.includes('You are an AI Speech Coach')
+                  )
+                  .map((item, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-start gap-3 p-3 rounded-lg ${
+                        item.role === 'assistant' ? 'bg-white' : 'bg-indigo-50'
+                      }`}
+                    >
+                      {/* Avatar/User Icon */}
+                      {item.role === 'assistant' ? (
+                        <img
+                          src={SparkAvatar}
+                          alt="Spark"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                          <User className="w-5 h-5 text-indigo-600" />
+                        </div>
+                      )}
+                      <div className="flex-1">
+                        <span className="font-medium">
+                          {item.role === 'user' ? 'You: ' : 'Spark: '}
+                        </span>
+                        {item.formatted.transcript || item.formatted.text || 'Processing...'}
+                      </div>
+                    </div>
+                  ))}
+                {items.length === 0 && (
+                  <div className="text-gray-500 text-center">
+                    Start the conversation to begin
                   </div>
-                ))}
-              {items.length === 0 && (
-                <div className="text-gray-500">
-                  Press and hold the button to start recording
-                </div>
-              )
-              }
+                )}
+              </div>
             </div>
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 };

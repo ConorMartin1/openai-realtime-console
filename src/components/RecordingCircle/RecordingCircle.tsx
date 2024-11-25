@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Mic, Square, Loader2 } from 'lucide-react';
+import { Mic, Square, Loader2, MessageSquareMoreIcon } from 'lucide-react';
 import astronautStill from '../../assets/AvatarStill.png';
 import astronaut from '../../assets/Avatargif.gif';
 
 interface RecordingCircleProps {
   isRecording: boolean;
   isConnected: boolean;
-  onStartRecording: () => void;
-  onStopRecording: () => void;
+  onToggleRecording: () => void;  // Changed from separate start/stop handlers
   onConnect: () => void;
   onDisconnect: () => void;
 }
@@ -15,8 +14,7 @@ interface RecordingCircleProps {
 const RecordingCircle: React.FC<RecordingCircleProps> = ({
   isRecording,
   isConnected,
-  onStartRecording,
-  onStopRecording,
+  onToggleRecording,
   onConnect,
   onDisconnect
 }) => {
@@ -26,8 +24,7 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
     <div className="flex flex-col items-center gap-4">
       {/* Main Circle */}
       <button
-        onMouseDown={onStartRecording}
-        onMouseUp={onStopRecording}
+        onClick={onToggleRecording}  // Changed from mouseDown/mouseUp to onClick
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         disabled={!isConnected}
@@ -45,14 +42,15 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
         `}
       >
         <img 
-        src={isRecording ? astronaut : astronautStill} 
-        alt="Recording indicator"
-        className={`
-          w-full h-full
-          object-cover
-          rounded-full
-        `}
-    />
+          src={isRecording ? astronaut : astronautStill} 
+          alt="Recording indicator"
+          className={`
+            w-full h-full
+            object-cover
+            rounded-full
+          `}
+        />
+        
         {/* Pulsing ring when recording */}
         {isRecording && (
           <div className="absolute inset-0">
@@ -72,9 +70,10 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
       <button
         onClick={isConnected ? onDisconnect : onConnect}
         className={`
-          px-6 py-2 rounded-full
+          px-6 py-3 rounded-full
           flex items-center gap-2
           transition-all duration-300
+          text-base font-medium
           ${isConnected 
             ? 'bg-gray-200 hover:bg-gray-300 text-gray-700' 
             : 'bg-indigo-600 hover:bg-indigo-700 text-white'
@@ -82,11 +81,14 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
         `}
       >
         {isConnected ? (
-          'Disconnect'
+          <>
+            <MessageSquareMoreIcon className="w-5 h-5" />
+            Disconnect
+          </>
         ) : (
           <>
-            Connect
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <MessageSquareMoreIcon className="w-5 h-5" />
+            Start the conversation
           </>
         )}
       </button>
@@ -94,8 +96,8 @@ const RecordingCircle: React.FC<RecordingCircleProps> = ({
       {/* Status Text */}
       <div className="text-sm font-medium text-gray-500">
         {!isConnected && 'Not connected'}
-        {isConnected && !isRecording && 'Ready to record'}
-        {isConnected && isRecording && 'I\'m listening...'}
+        {isConnected && !isRecording && 'Click to start recording'}
+        {isConnected && isRecording && 'Click to stop recording'}
       </div>
     </div>
   );
