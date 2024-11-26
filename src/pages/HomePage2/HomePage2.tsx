@@ -5,7 +5,7 @@ import { Brain, Mic, FileText } from 'lucide-react';
 import Banner2 from "../../components/Banner2/banner2";
 import { motion, AnimatePresence } from 'framer-motion';
 import avatar from '../../assets/AvatarStill.png';
-import Footer from '../../components/Footer/Footer'
+import Footer from '../../components/Footer/Footer';
 
 const { Title, Text } = Typography;
 const { Content } = Layout;

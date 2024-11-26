@@ -10,8 +10,6 @@ import TemplatesPage from './pages/TemplatesPage/TemplatesPage';
 import TemplatesPage2 from './pages/TemplatesPage2/TemplatesPage2';
 
 function App() {
-  console.log("App is rendering");
-
   return (
     <Router>
       <Routes>
