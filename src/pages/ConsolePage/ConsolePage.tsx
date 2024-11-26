@@ -10,6 +10,7 @@ import Banner from '../../components/Banner/Banner';
 import { MessageCircle, User } from 'lucide-react';
 import SparkAvatar from '../../assets/AvatarStill.png';
 import './ConsolePage.scss';
+import * as pdfjsLib from 'pdfjs-dist';
 
 const LOCAL_RELAY_SERVER_URL: string = process.env.REACT_APP_LOCAL_RELAY_SERVER_URL || '';
 
@@ -22,7 +23,7 @@ interface RealtimeEvent {
 
 const ConsolePage: React.FC = () => {
   const navigate = useNavigate();
-  
+
   // Get API Key
   const apiKey = LOCAL_RELAY_SERVER_URL
     ? ''
@@ -38,6 +39,7 @@ const ConsolePage: React.FC = () => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [items, setItems] = useState<ItemType[]>([]);
   const [audioData, setAudioData] = useState<number[]>(Array(50).fill(0));
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Refs
   const wavRecorderRef = useRef<WavRecorder>(
@@ -135,7 +137,7 @@ const ConsolePage: React.FC = () => {
       const client = clientRef.current;
       const wavRecorder = wavRecorderRef.current;
       const wavStreamPlayer = wavStreamPlayerRef.current;
-      
+
       const trackSampleOffset = await wavStreamPlayer.interrupt();
       if (trackSampleOffset?.trackId) {
         const { trackId, offset } = trackSampleOffset;
@@ -151,6 +153,54 @@ const ConsolePage: React.FC = () => {
       client.createResponse();
     }
   }, [isConnected, isRecording]);
+
+  // File upload handler
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      console.log('Selected file:', file);
+      addPdfReference(file);
+    }
+  };
+
+  const addPdfReference = async (file: File) => {
+    const reader = new FileReader();
+
+    reader.onload = async (event) => {
+      const client = clientRef.current;
+      const typedArray = new Uint8Array(event.target?.result as ArrayBuffer);
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+      const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+      let textContent = '';
+
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const text = await page.getTextContent();
+        text.items.forEach((item: any) => {
+          textContent += item.str + ' ';
+        });
+      }
+
+      // Update the session with reference text
+      let updateInstructions = 'the following text gives you background on the subject: ';
+      updateInstructions += textContent;
+      client.updateSession({
+        instructions: updateInstructions
+      });
+      client.sendUserMessageContent([{ type: 'input_text', text: textContent }]);
+
+      client.updateSession({ input_audio_transcription: { model: 'whisper-1' } });
+
+      console.log('Extracted text:', textContent);
+      // You can now use the extracted text as needed
+    };
+
+    reader.readAsArrayBuffer(file);
+
+  };
 
   // Setup effect
   useEffect(() => {
@@ -169,6 +219,7 @@ const ConsolePage: React.FC = () => {
       client.reset();
     };
   }, []);
+
 
   const goToReviewPage = () => {
     navigate('/review', { state: { items } });
@@ -218,6 +269,16 @@ const ConsolePage: React.FC = () => {
           </div>
         </div>
 
+        {/* File Upload Button */}
+        <div onClick={() => {
+          const fileInput = document.getElementById('fileInput');
+          if (fileInput) {
+            fileInput.click();
+          }
+        }}>Upload your content</div>
+        <input type="file" id="fileInput" style={{ display: 'none' }} accept=".pdf" onChange={handleFileUpload} />
+
+
         {/* Fixed Transcript Section */}
         {isConnected && (
           <div className="flex-none border-t border-gray-200 bg-white">
@@ -225,7 +286,7 @@ const ConsolePage: React.FC = () => {
               <div className="border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900 p-4">Transcript</h2>
               </div>
-              
+
               <div className="h-64 overflow-y-auto p-4 space-y-4">
                 {items
                   .filter(item =>
@@ -234,9 +295,8 @@ const ConsolePage: React.FC = () => {
                   .map((item, index) => (
                     <div
                       key={index}
-                      className={`flex items-start gap-3 p-3 rounded-lg ${
-                        item.role === 'assistant' ? 'bg-white' : 'bg-indigo-50'
-                      }`}
+                      className={`flex items-start gap-3 p-3 rounded-lg ${item.role === 'assistant' ? 'bg-white' : 'bg-indigo-50'
+                        }`}
                     >
                       {/* Avatar/User Icon */}
                       {item.role === 'assistant' ? (
